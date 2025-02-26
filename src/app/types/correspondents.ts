@@ -1,0 +1,10 @@
+export interface Group {}
+
+export interface User {
+  username: string;
+  email: string;
+  createdAt: Date;
+  updatedAt: Date;
+  role: string;
+  id: number;
+}

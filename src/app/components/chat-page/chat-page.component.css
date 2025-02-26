@@ -1,0 +1,7 @@
+.chat-layout {
+  display: flex;
+}
+
+.chat-layout :first-child {
+  width: 300px;
+}

@@ -1,0 +1,17 @@
+<div class="chat-wrapper">
+  <p>This is the room : {{ roomName() }}</p>
+  <br />
+  @for (message of messages(); track message) {
+  <p>{{ message }}</p>
+  }
+
+  <form (ngSubmit)="onSubmit()">
+    <input
+      type="text"
+      placeholder="votre message ici..."
+      [(ngModel)]="messageToSend().message"
+      name="messageToSend"
+    />
+    <button type="submit">send message</button>
+  </form>
+</div>

@@ -1,0 +1,11 @@
+<div class="chat-layout">
+  <nav>
+    <section class="profile">
+      <h2>{{ currentUser().username }}</h2>
+      <app-logout-button></app-logout-button>
+    </section>
+
+    <app-user-list></app-user-list>
+  </nav>
+  <router-outlet></router-outlet>
+</div>

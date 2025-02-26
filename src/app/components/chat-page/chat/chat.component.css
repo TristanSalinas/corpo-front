@@ -1,0 +1,6 @@
+.chat-wrapper {
+  height: 100%;
+  background-color: rgb(185, 213, 242);
+  width: calc(100vw - 300px);
+  padding: 1rem;
+}

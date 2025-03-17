@@ -1,0 +1,8 @@
+<div
+  class="random-art"
+  [style.background-color]="colorPair().color"
+  [style.height]="size()"
+  [style.font-size]="size()"
+>
+  <p [style.color]="colorPair().reversedColor">{{ seed()?.charAt(0) }}</p>
+</div>

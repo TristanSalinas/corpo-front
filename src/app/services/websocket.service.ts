@@ -1,6 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { Message } from '../types/message';
+import { filter, map, Observable, share, Subject } from 'rxjs';
+
+import {
+  EnrichedConversation,
+  Message,
+  ServerSentEvents,
+  UserSentEvents,
+} from '../types/types';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +20,7 @@ export class WebsocketService {
     this.socket = new WebSocket(this.url);
 
     this.socket.onmessage = (event) => {
+      console.log('serverEvent: ', event.data);
       this.messageSubject.next(event.data);
     };
 
@@ -28,16 +35,38 @@ export class WebsocketService {
     };
   }
 
-  sendMessage(message: Message): void {
+  sendEvent(userEvent: UserSentEvents): void {
     if (this.socket.readyState === WebSocket.OPEN) {
-      this.socket.send(JSON.stringify(message));
+      this.socket.send(JSON.stringify(userEvent));
     } else {
       console.error('WebSocket is not open. Cannot send message.');
     }
   }
 
-  getAllMessages(): Observable<string> {
-    return this.messageSubject.asObservable();
+  getWSEventsStream(): Observable<ServerSentEvents> {
+    return this.messageSubject
+      .asObservable()
+      .pipe(map((message) => JSON.parse(message) as ServerSentEvents));
+  }
+
+  getAllMessagesStream(): Observable<Message> {
+    return this.getWSEventsStream().pipe(
+      filter((event) => event.datatype === 'message'),
+      map((event) => event.payload)
+    );
+  }
+
+  getMessagesStreamFromConversation(id: number): Observable<Message> {
+    return this.getAllMessagesStream().pipe(
+      filter((message) => message.conversation_id === id)
+    );
+  }
+
+  getConvCreationStream(): Observable<EnrichedConversation> {
+    return this.getWSEventsStream().pipe(
+      filter((event) => event.datatype === 'convCreation'),
+      map((event) => event.payload)
+    );
   }
 
   closeConnection(): void {

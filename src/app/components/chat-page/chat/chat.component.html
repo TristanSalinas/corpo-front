@@ -1,17 +1,38 @@
-<div class="chat-wrapper">
-  <p>This is the room : {{ roomName() }}</p>
-  <br />
-  @for (message of messages(); track message) {
-  <p>{{ message }}</p>
-  }
-
-  <form (ngSubmit)="onSubmit()">
-    <input
-      type="text"
-      placeholder="votre message ici..."
-      [(ngModel)]="messageToSend().message"
-      name="messageToSend"
-    />
-    <button type="submit">send message</button>
-  </form>
-</div>
+<section class="chat-wrapper" appSwipeDetector (swipeRight)="openSidePanel()">
+  <header class="chat-header">
+    <button class="back-button debug" (click)="openSidePanel()">back</button>
+    @for (user of currentConvMembers(); track $index) {
+    <div class="chat-member">
+      <app-random-art [seed]="user.username" [size]="'25px'"></app-random-art>
+      <p class="chat-member-name">{{ user.username }}</p>
+    </div>
+    }
+  </header>
+  <div class="chat-body">
+    @if(chatService.currentConvMessages().length === 0) {
+    <p class="no-message">Aucun message</p>
+    } @for (message of chatService.currentConvMessages(); track $index) {
+    <app-message [enrichedMessage]="message"></app-message>
+    }
+  </div>
+  <footer class="chat-footer">
+    <form class="message-form" (ngSubmit)="onSubmit()">
+      <input
+        class="message-input"
+        type="text"
+        placeholder="votre message ici..."
+        autocomplete="off"
+        [(ngModel)]="messageToSend().message"
+        name="messageToSend"
+      />
+      <button
+        [disabled]="currentConvMembers().length === 0"
+        [class.disabled]="currentConvMembers().length === 0"
+        class="message-submit-button"
+        type="submit"
+      >
+        Envoyer
+      </button>
+    </form>
+  </footer>
+</section>

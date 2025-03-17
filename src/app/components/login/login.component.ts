@@ -1,8 +1,10 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+
 import { AuthService } from '../../services/auth.service';
 import { Router, RouterLink } from '@angular/router';
-import { WebsocketService } from '../../services/websocket.service';
+
+import { ChatService } from '../../services/chat.service';
 
 @Component({
   selector: 'app-login',
@@ -11,9 +13,10 @@ import { WebsocketService } from '../../services/websocket.service';
   styleUrl: './login.component.css',
 })
 export class LoginComponent {
+  chatService = inject(ChatService);
   authService = inject(AuthService);
   router = inject(Router);
-  webSocketService = inject(WebsocketService);
+
   readonly credentials = signal({
     email: '',
     password: '',
@@ -21,19 +24,11 @@ export class LoginComponent {
 
   readonly message = signal('');
   async onSubmit() {
-    this.authService
-      .login(this.credentials().email, this.credentials().password)
-      .subscribe({
-        next: (response: any) => {
-          console.log('login success', response);
-          this.authService.setCurrentUser(response.user);
-          this.webSocketService.connect();
-          this.router.navigateByUrl('/chat');
-        },
-        error: (error) => {
-          console.log('Registration failed : ' + error.error.message);
-          return error;
-        },
-      });
+    await this.authService.login(
+      this.credentials().email,
+      this.credentials().password
+    );
+    this.chatService.init();
+    this.router.navigate(['/chat']);
   }
 }

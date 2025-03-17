@@ -21,7 +21,7 @@ export const expiredTokenInterceptor: HttpInterceptorFn = (
       error: (errorResponse: HttpErrorResponse) => {
         if (errorResponse.status === HttpStatusCode.Unauthorized) {
           router.navigateByUrl('/login');
-          alert('Session expired');
+          alert(errorResponse.error.error);
         } else {
           console.error(errorResponse);
         }

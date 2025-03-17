@@ -1,7 +1,154 @@
 .chat-layout {
+  position: relative;
   display: flex;
+  height: 100vh;
+  width: 100vw;
 }
 
-.chat-layout :first-child {
-  width: 300px;
+.side-panel {
+  box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.44);
+  position: absolute;
+  left: -100%;
+  bottom: 0;
+  top: 0;
+  overflow-y: scroll;
+  width: 100%;
+  padding: 2rem;
+  z-index: 10;
+  background-color: white;
+  transition: left 0.3s ease-in-out;
+
+  .side-panel-header {
+    .logo {
+      max-width: 75%;
+      max-height: 100%;
+    }
+
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 1.5rem 0;
+
+      .current-user {
+        .username {
+          font-size: 1.25rem;
+          font-weight: 700;
+          margin: 0;
+        }
+        .email {
+          margin: 0;
+          color: var(--grey);
+        }
+        .status-phrase {
+          margin: 0;
+        }
+      }
+    }
+  }
+  .filter-form {
+    margin: 0;
+    padding: 0;
+
+    .search-bar {
+      position: relative;
+      display: flex;
+      align-items: center;
+      margin: 1.5rem 0;
+
+      .search-input {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: none;
+        background-color: var(--light-grey);
+        border-radius: 3rem;
+      }
+      .search-icon {
+        position: absolute;
+        right: 0.75rem;
+        width: 1rem;
+        height: 1rem;
+      }
+    }
+
+    .radio-filter-fieldset {
+      display: flex;
+
+      justify-content: left;
+      margin: 1.5rem 0;
+      gap: 0.5rem;
+      border: none;
+
+      .radio-label {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 0.7rem;
+        font-weight: 600;
+        background-color: var(--secondary);
+        opacity: 0.6;
+        padding: 0.5rem 0.75rem;
+        border-radius: 3rem;
+        border: 1px solid transparent;
+
+        input {
+          display: none;
+        }
+        .radio-icon {
+          width: 1.25rem;
+          height: 1.25rem;
+          margin-right: 2px;
+        }
+      }
+      .radio-label:hover {
+        opacity: 1;
+        cursor: pointer;
+      }
+      .radio-label:has(input[type="radio"]:checked) {
+        opacity: 1;
+        border: 1px solid var(--primary);
+      }
+    }
+  }
+  .contact-line-wrapper {
+    margin: 0.75rem 0;
+    padding: 0.25rem 0;
+    border-radius: 3rem;
+  }
+
+  .contact-line-wrapper:hover {
+    background-color: var(--light-grey);
+    cursor: pointer;
+  }
+  .current-conversation {
+    background-color: var(--secondary);
+    padding-left: 0.25rem;
+  }
+}
+
+.chat {
+  flex: 1;
+  position: relative;
+  background-color: var(--light-grey);
+  width: 100%;
+}
+
+.side-panel-open {
+  inset: 0;
+}
+
+@media screen and (min-width: 768px) {
+  .side-panel {
+    left: 0;
+    width: clamp(300px, 375px, 40%);
+    position: relative;
+  }
+  .side-panel-open {
+    left: 0;
+  }
+
+  .chat {
+    padding: 1.5rem 2rem;
+    overflow: hidden;
+  }
 }

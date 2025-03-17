@@ -11,6 +11,6 @@ export const routes: Routes = [
   {
     path: 'chat',
     component: ChatPageComponent,
-    children: [{ path: ':chatId', component: ChatComponent }],
+    //children: [{ path: ':convName#convId', component: ChatComponent }],
   },
 ];

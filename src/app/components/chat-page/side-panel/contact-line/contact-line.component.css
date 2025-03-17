@@ -1,0 +1,16 @@
+.contact-line {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+
+  .contact-icon {
+    width: 2rem;
+    height: 2rem;
+  }
+  .contact-name {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+}

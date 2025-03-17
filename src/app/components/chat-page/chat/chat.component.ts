@@ -1,52 +1,53 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {
+  Component,
+  computed,
+  inject,
+  input,
+  OnInit,
+  Signal,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { ChatService } from '../../../services/chat.service';
-import { ApiService } from '../../../services/api.service';
+import { AuthService } from '../../../services/auth.service';
+import { SwipeDetectorDirective } from '../../../directives/swipe-detector.directive';
+import { MessageComponent } from './message/message.component';
+import { RandomArtComponent } from '../../commons/random-art/random-art.component';
 
 @Component({
   selector: 'app-chat',
-  imports: [FormsModule],
+  imports: [
+    FormsModule,
+    SwipeDetectorDirective,
+    MessageComponent,
+    RandomArtComponent,
+  ],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.css',
 })
-export class ChatComponent implements OnInit {
-  readonly roomName = signal<string | null>(null);
-  private route = inject(ActivatedRoute);
-  private chatService = inject(ChatService); // access to the websocket
-  private apiService = inject(ApiService);
+export class ChatComponent {
+  readonly chatService = inject(ChatService);
+  readonly authService = inject(AuthService);
+  isSidePanelOpen = input.required<WritableSignal<boolean>>();
 
-  readonly messages = signal<string[]>([]);
-  readonly messageToSend = signal({
-    message: '',
-  });
+  currentConvMembers = computed(
+    () =>
+      this.chatService
+        .currentConv()
+        ?.users.filter(
+          (user) => user.id !== this.authService.currentUser()?.id
+        ) ?? []
+  );
 
-  //on init ask back for archived messages for chatservice.currentconversation then subscribe to chatService.getMessageStreamFromCurrentConversation()
-  //if no conversation id is in chatservice then switch chat sate to prepareConversation then listen to
-  // allmessagestream and check if the message ("senderName" + "#" + "senderId" === roomName) If so add message to messages
-  // and switch chat state to conversation
+  readonly messageToSend = signal({ message: '' });
 
-  ngOnInit(): void {
-    this.route.paramMap.subscribe((params) => {
-      if (params) {
-        this.roomName.set(params.get('chatId'));
-      }
-    });
-
-    const messageStream$ =
-      this.chatService.getMessageStreamFromCurrentConversation();
-
-    if (messageStream$) {
-      messageStream$.subscribe((message) => {
-        this.messages.update((messages) => [...messages, message]);
-      });
-    }
+  openSidePanel() {
+    this.isSidePanelOpen().set(true);
   }
-
-  //onSubmit if current room is in prepareConversation state make the back to create a conversation
-  //and switch chat state to conversation then send the message through chatservice.sendMessage
-  onSubmit(): void {
+  onSubmit() {
     this.chatService.sendMessage(this.messageToSend().message);
+    this.messageToSend.set({ message: '' });
   }
 }

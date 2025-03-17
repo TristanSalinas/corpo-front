@@ -1,0 +1,17 @@
+<article class="message-wrapper" [class.own-message]="isOwnMessage()">
+  <aside aria-hidden="true" class="message-avatar">
+    <app-random-art
+      [seed]="enrichedMessage().sender.username"
+      [size]="'24px'"
+    ></app-random-art>
+  </aside>
+  <div class="message">
+    <div class="message-header">
+      <h3 class="message-sender">{{ enrichedMessage().sender.username }}</h3>
+      <p class="message-date">
+        {{ enrichedMessage().sent_at | date : "dd/MM HH:mm" }}
+      </p>
+    </div>
+    <p class="message-content">{{ enrichedMessage().content }}</p>
+  </div>
+</article>

@@ -1,0 +1,10 @@
+<article class="contact-line" (click)="handleOnClick()()" tabindex="0">
+  <!--<img
+    class="contact-icon"
+    aria-hidden="true"
+    src="assets/icons/userbis-icon.svg"
+    alt="icone genérique d'un utilisateur"
+  />-->
+  <app-random-art [seed]="name()" [size]="'2rem'"></app-random-art>
+  <h3 class="contact-name">{{ name() }}</h3>
+</article>

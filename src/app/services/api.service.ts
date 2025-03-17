@@ -1,11 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { User } from '../types/correspondents';
-import { Observable } from 'rxjs';
-interface NbrOfUnreadMessagesFromUserObservableContent {
-  number: number;
-  conversation_id: number;
-}
+import { EnrichedConversation, Message, User } from '../types/types';
+import { first, firstValueFrom } from 'rxjs';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -14,22 +11,45 @@ export class ApiService {
 
   private readonly http = inject(HttpClient);
 
-  users() {
-    return this.http.get<Array<User>>(`${this.apiUrl}/user/users`, {
-      withCredentials: true,
-    });
+  whoAmI() {}
+  async getUsers() {
+    console.log('getting Users...');
+    return await firstValueFrom(
+      this.http.get<Array<User>>(`${this.apiUrl}/user/users`, {
+        withCredentials: true,
+      })
+    );
   }
 
-  conversation(id: number) {}
-
-  messagesFromConversation(id: number) {
-    return;
+  async getEnrichedConversations() {
+    console.log('getting conversations...');
+    return await firstValueFrom(
+      this.http.get<Array<EnrichedConversation>>(
+        `${this.apiUrl}/chat/conversations`,
+        {
+          withCredentials: true,
+        }
+      )
+    );
   }
 
-  nbrOfUnreadMessagesFromUser(id: number) {
-    return this.http.get<Object<number: number, conversationId : number>>(
-      `${this.apiUrl}/${id}/unread`,
-      { withCredentials: true }
+  async createPrivateConversation(targetUserId: number) {
+    return (await firstValueFrom(
+      this.http.post(
+        `${this.apiUrl}/chat/new-private-conversation`,
+        { targetUserId },
+        { withCredentials: true }
+      )
+    )) as EnrichedConversation;
+  }
+
+  async getMessagesFromConversation(conversationId: number) {
+    console.log('getting messages from conversation...', conversationId);
+    return await firstValueFrom(
+      this.http.get<Array<Message>>(
+        `${this.apiUrl}/chat/messages/${conversationId}`,
+        { withCredentials: true }
+      )
     );
   }
 }

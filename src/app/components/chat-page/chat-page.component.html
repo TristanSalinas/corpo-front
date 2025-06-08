@@ -17,10 +17,14 @@
           [size]="'50px'"
         ></app-random-art>
         <div class="current-user">
-          <h1 class="username">
-            {{ authService.currentUser()?.username }}
+          <h1 tabindex="0" class="username">
+            <span class="sr-only">Connecté en temps que </span
+            >{{ authService.currentUser()?.username }}
           </h1>
-          <p class="email">{{ authService.currentUser()?.email }}</p>
+          <p class="email">
+            <span class="sr-only">adresse email :</span
+            >{{ authService.currentUser()?.email }}
+          </p>
           <p class="status-phrase">
             {{ authService.currentUser()?.status_phrase }}
           </p>
@@ -29,7 +33,9 @@
     </header>
     <form class="filter-form">
       <div class="search-bar">
-        <label class="sr-only" for="search-input">Search :</label>
+        <label class="sr-only" for="search-input"
+          >Rechercher parmi les contacts et groupes</label
+        >
         <input
           class="search-input"
           type="text"
@@ -37,18 +43,19 @@
           placeholder="Rechercher..."
         />
         <img
+          aria-hidden="true"
           class="search-icon"
           src="assets/icons/search-icon.svg"
           alt="search icon"
         />
       </div>
       <fieldset class="radio-filter-fieldset">
-        <legend class="sr-only">Afficher les contacts :</legend>
-        <label class="radio-label radio-all-label">
+        <legend class="sr-only">Filtrer les contacts :</legend>
+        <label tabindex="0" class="radio-label radio-all-label">
           <input type="radio" name="filter" value="all" checked />
           <span>Tous</span>
         </label>
-        <label class="radio-label">
+        <label tabindex="0" class="radio-label">
           <input type="radio" name="filter" value="contacts" />
           <img
             class="radio-icon"
@@ -58,7 +65,7 @@
           />
           <span>Contacts</span>
         </label>
-        <label class="radio-label">
+        <label tabindex="0" class="radio-label">
           <input type="radio" name="filter" value="groups" />
           <img
             class="radio-icon"
@@ -71,7 +78,7 @@
       </fieldset>
     </form>
     <nav class="contact-list-container">
-      <ul>
+      <ul aria-live="polite">
         @for (privateConversation of chatService.privateConversations(); track
         $index) { @let other = privateConversation.users[0].id===
         authService.currentUser()?.id ? privateConversation.users[1] :
@@ -98,28 +105,15 @@
         }
       </ul>
     </nav>
-    <!--<nav>
-      <ul>
-        @for (privateConversation of chatService.privateConversations(); track
-        $index) {
-        <li
-          [class.current-conversation]="
-            privateConversation.conversation_id ===
-            chatService.currentConv()?.conversation_id
-          "
-        >
-          <button (click)="navigateToChat(privateConversation)">
-            @for (users of privateConversation.users; track $index) { @if
-            (users.id !== authService.currentUser()?.id) {
-            {{ users.username }}
-            } }
-          </button>
-        </li>
-        }
-      </ul>
-    </nav>-->
-
-    <app-logout-button></app-logout-button>
+    <footer class="side-panel-footer">
+      <app-logout-button></app-logout-button>
+      <a class="settings-link" routerLink="/settings" aria-label="Paramètres"
+        ><img
+          aria-hidden="true"
+          src="assets/icons/settings-icon.svg"
+          alt="icone de paramètres"
+      /></a>
+    </footer>
   </aside>
   <app-chat class="chat" [isSidePanelOpen]="isSidePanelOpen"></app-chat>
 </main>

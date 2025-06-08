@@ -11,9 +11,11 @@
   left: -100%;
   bottom: 0;
   top: 0;
-  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   padding: 2rem;
+  padding-bottom: 0;
   z-index: 10;
   background-color: white;
   transition: left 0.3s ease-in-out;
@@ -49,7 +51,7 @@
   .filter-form {
     margin: 0;
     padding: 0;
-
+    border-bottom: 1px solid var(--light-grey);
     .search-bar {
       position: relative;
       display: flex;
@@ -110,19 +112,36 @@
       }
     }
   }
-  .contact-line-wrapper {
-    margin: 0.75rem 0;
-    padding: 0.25rem 0;
-    border-radius: 3rem;
+  .contact-list-container::-webkit-scrollbar {
+    display: none;
   }
+  .contact-list-container {
+    flex: 1;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 
-  .contact-line-wrapper:hover {
-    background-color: var(--light-grey);
-    cursor: pointer;
+    .contact-line-wrapper {
+      margin: 0.75rem 0;
+      padding: 0.25rem 0;
+      border-radius: 3rem;
+    }
+
+    .contact-line-wrapper:hover {
+      background-color: var(--light-grey);
+      cursor: pointer;
+    }
+    .current-conversation {
+      background-color: var(--secondary);
+      padding-left: 0.25rem;
+    }
   }
-  .current-conversation {
-    background-color: var(--secondary);
-    padding-left: 0.25rem;
+  .side-panel-footer {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    justify-content: space-between;
+    border-top: 1px solid var(--light-grey);
   }
 }
 

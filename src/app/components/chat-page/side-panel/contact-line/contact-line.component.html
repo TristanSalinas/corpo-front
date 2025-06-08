@@ -1,10 +1,10 @@
-<article class="contact-line" (click)="handleOnClick()()" tabindex="0">
-  <!--<img
-    class="contact-icon"
-    aria-hidden="true"
-    src="assets/icons/userbis-icon.svg"
-    alt="icone genérique d'un utilisateur"
-  />-->
+<article
+  class="contact-line"
+  (click)="handleOnClick()()"
+  tabindex="0"
+  role="button"
+  [attr.aria-labelledby]="name()"
+>
   <app-random-art [seed]="name()" [size]="'2rem'"></app-random-art>
-  <h3 class="contact-name">{{ name() }}</h3>
+  <p [id]="name()" class="contact-name">{{ name() }}</p>
 </article>

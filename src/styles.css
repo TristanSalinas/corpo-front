@@ -45,6 +45,10 @@ body {
   border: 0;
 }
 
+button {
+  cursor: pointer;
+}
+
 .debug {
   border: 1px solid red;
 }

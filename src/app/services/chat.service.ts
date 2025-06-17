@@ -7,7 +7,7 @@ import {
   User,
 } from '../types/types';
 import { ApiService } from './api.service';
-import { firstValueFrom, Observable, share, Subject, Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { enrichMessages } from '../utils/utils';
 import { AuthService } from './auth.service';
 
@@ -27,6 +27,7 @@ export class ChatService {
   users = signal<User[]>([]);
   privateConversations = signal<EnrichedConversation[]>([]);
   groupConversations = signal<EnrichedConversation[]>([]);
+
   uncontactedUsers = computed(() => {
     const returnValue = this.users()
       .filter((user) => {
@@ -41,7 +42,6 @@ export class ChatService {
 
   sendMessage(messageContent: string) {
     const conversation = this.currentConv()?.conversation_id;
-
     if (conversation) {
       console.log('sending message to ', conversation);
       this.websocketService.sendEvent({

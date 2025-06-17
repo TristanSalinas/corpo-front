@@ -11,7 +11,7 @@ export class ApiService {
 
   private readonly http = inject(HttpClient);
 
-  whoAmI() {}
+  //whoAmI() {}
   async getUsers() {
     console.log('getting Users...');
     return await firstValueFrom(

@@ -43,6 +43,7 @@ export class WebsocketService {
     }
   }
 
+
   getWSEventsStream(): Observable<ServerSentEvents> {
     return this.messageSubject
       .asObservable()

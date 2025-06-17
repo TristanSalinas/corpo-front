@@ -3,8 +3,6 @@ import {
   computed,
   inject,
   input,
-  OnInit,
-  Signal,
   signal,
   WritableSignal,
 } from '@angular/core';
@@ -31,7 +29,6 @@ export class ChatComponent {
   readonly chatService = inject(ChatService);
   readonly authService = inject(AuthService);
   isSidePanelOpen = input.required<WritableSignal<boolean>>();
-
   currentConvMembers = computed(
     () =>
       this.chatService
@@ -39,9 +36,9 @@ export class ChatComponent {
         ?.users.filter(
           (user) => user.id !== this.authService.currentUser()?.id
         ) ?? []
-  );
+  ); //filter out the current user from the list to display
 
-  readonly messageToSend = signal({ message: '' });
+  readonly messageToSend = signal({ message: '' }); // Data bound to the input field
 
   openSidePanel() {
     this.isSidePanelOpen().set(true);

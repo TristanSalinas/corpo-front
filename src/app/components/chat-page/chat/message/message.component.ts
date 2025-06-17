@@ -1,7 +1,7 @@
 import { Component, computed, inject, input } from '@angular/core';
 import { EnrichedMessage } from '../../../../types/types';
 import { AuthService } from '../../../../services/auth.service';
-import { DatePipe, NgClass } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { RandomArtComponent } from '../../../commons/random-art/random-art.component';
 
 @Component({
@@ -12,7 +12,6 @@ import { RandomArtComponent } from '../../../commons/random-art/random-art.compo
 })
 export class MessageComponent {
   readonly authService = inject(AuthService);
-
   enrichedMessage = input.required<EnrichedMessage>();
   isOwnMessage = computed(
     () =>

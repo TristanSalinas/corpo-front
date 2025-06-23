@@ -8,7 +8,10 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:3000/auth';
+  private apiUrl = `${
+    import.meta.env.NG_APP_API_URL ?? 'http://localhost:3000'
+  }/auth`;
+
   readonly router = inject(Router);
   private readonly http = inject(HttpClient);
   readonly currentUser = signal<User | undefined>(undefined);

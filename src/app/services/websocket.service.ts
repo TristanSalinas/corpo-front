@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { filter, map, Observable, share, Subject } from 'rxjs';
+import { filter, map, Observable, Subject } from 'rxjs';
 
 import {
   EnrichedConversation,
@@ -12,7 +12,9 @@ import {
   providedIn: 'root',
 })
 export class WebsocketService {
-  private readonly url = 'ws://localhost:3000/chat/ws';
+  private readonly url =
+    import.meta.env.WEBSOCKET_URL ?? 'ws://localhost:3000/chat/ws';
+
   private socket!: WebSocket;
   private messageSubject = new Subject<string>();
 
@@ -42,7 +44,6 @@ export class WebsocketService {
       console.error('WebSocket is not open. Cannot send message.');
     }
   }
-
 
   getWSEventsStream(): Observable<ServerSentEvents> {
     return this.messageSubject

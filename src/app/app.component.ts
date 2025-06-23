@@ -9,13 +9,14 @@ import { ChatService } from './services/chat.service';
   selector: 'app-root',
   standalone: true,
   imports: [CommonModule, RouterOutlet],
-  templateUrl: `./app.component.html`,
+  template: `<router-outlet />`,
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
   readonly authService = inject(AuthService);
   readonly chatService = inject(ChatService);
   readonly router = inject(Router);
+  
   ngOnInit() {
     this.authService.fetchCurrentUser();
     this.chatService.init();

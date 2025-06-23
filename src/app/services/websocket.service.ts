@@ -13,7 +13,7 @@ import {
 })
 export class WebsocketService {
   private readonly url =
-    import.meta.env.WEBSOCKET_URL ?? 'ws://localhost:3000/chat/ws';
+    import.meta.env.NG_APP_WEBSOCKET_URL ?? 'ws://localhost:3000/chat/ws';
 
   private socket!: WebSocket;
   private messageSubject = new Subject<string>();
